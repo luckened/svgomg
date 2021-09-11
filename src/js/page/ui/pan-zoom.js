@@ -1,28 +1,28 @@
-function getXY(obj) {
+const getXY = (obj) => {
   return {
     x: obj.pageX,
     y: obj.pageY
   };
-}
+};
 
-function touchDistance(touch1, touch2) {
+const touchDistance = (touch1, touch2) => {
   const dx = Math.abs(touch2.x - touch1.x);
   const dy = Math.abs(touch2.y - touch1.y);
   return Math.hypot(dx, dy);
-}
+};
 
-function getMidpoint(point1, point2) {
+const getMidpoint = (point1, point2) => {
   return {
     x: (point1.x + point2.x) / 2,
     y: (point1.y + point2.y) / 2
   };
-}
+};
 
-function getPoints(event) {
+const getPoints = (event) => {
   return event.touches ?
     [...event.touches].map(touch => getXY(touch)) :
     [getXY(event)];
-}
+};
 
 export default class PanZoom {
   constructor(target, {

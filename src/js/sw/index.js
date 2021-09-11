@@ -46,7 +46,7 @@ addEventListener('activate', event => {
   })());
 });
 
-async function handleFontRequest(request) {
+const handleFontRequest = async (request) => {
   const match = await caches.match(request);
   if (match) return match;
 
@@ -57,7 +57,7 @@ async function handleFontRequest(request) {
 
   fontCache.put(request, response.clone());
   return response;
-}
+};
 
 addEventListener('fetch', event => {
   const url = new URL(event.request.url);

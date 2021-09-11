@@ -1,7 +1,7 @@
 export const domReady = new Promise(resolve => {
-  function checkState() {
+  const checkState = () => {
     if (document.readyState !== 'loading') resolve();
-  }
+  };
 
   document.addEventListener('readystatechange', checkState);
   checkState();
@@ -10,9 +10,9 @@ export const domReady = new Promise(resolve => {
 const range = document.createRange();
 range.selectNode(document.documentElement);
 
-export function strToEl(str) {
+export const strToEl = (str) => {
   return range.createContextualFragment(String(str)).children[0];
-}
+};
 
 const entityMap = {
   '&': '&amp;',
@@ -23,21 +23,21 @@ const entityMap = {
   '/': '&#x2F;'
 };
 
-export function escapeHTML(str) {
+export const escapeHTML = (str) => {
   return String(str).replace(/[&<>"'/]/g, s => entityMap[s]);
-}
+};
 
-export function escapeHtmlTag(strings, ...values) {
+export const escapeHtmlTag = (strings, ...values) => {
   values = values.map(s => escapeHTML(s));
   return strings.reduce((str, val, i) => str += val + (values[i] || ''), '');
-}
+};
 
-export function readFileAsText(file) {
+export const readFileAsText = (file) => {
   return new Response(file).text();
-}
+};
 
-function transitionClassFunc({ removeClass = false } = {}) {
-  return function(element, className = 'active', transitionClass = 'transition') {
+const transitionClassFunc = ({ removeClass = false } = {}) => {
+  return (element, className = 'active', transitionClass = 'transition') => {
     if (removeClass) {
       if (!element.classList.contains(className)) return Promise.resolve();
     } else if (element.classList.contains(className)) return Promise.resolve();
@@ -64,12 +64,12 @@ function transitionClassFunc({ removeClass = false } = {}) {
 
     return Promise.race([transitionEnd, transitionTimeout]);
   };
-}
+};
 
 export const transitionToClass = transitionClassFunc();
 export const transitionFromClass = transitionClassFunc({ removeClass: true });
 
-export function trackFocusMethod() {
+export const trackFocusMethod = () => {
   let focusMethod = 'mouse';
 
   document.body.addEventListener('focus', event => {
@@ -87,4 +87,4 @@ export function trackFocusMethod() {
   document.body.addEventListener('mousedown', () => {
     focusMethod = 'mouse';
   }, true);
-}
+};

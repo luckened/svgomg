@@ -27,7 +27,7 @@ const createDimensionsExtractor = () => {
   return [dimensions, plugin];
 };
 
-function compress(svgInput, settings) {
+const compress = (svgInput, settings) => {
   // setup plugin list
   const floatPrecision = Number(settings.floatPrecision);
   const plugins = [];
@@ -66,7 +66,7 @@ function compress(svgInput, settings) {
     data: svgOutput,
     dimensions
   };
-}
+};
 
 const actions = {
   wrapOriginal({ data }) {
