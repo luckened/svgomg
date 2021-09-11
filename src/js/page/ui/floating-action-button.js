@@ -5,9 +5,9 @@ import Spinner from './spinner.js';
 export default class FloatingActionButton {
   constructor({ title, href, iconSvg, classList, major = false }) {
     this.container = strToEl(
-      String((href ? '<a>' : '<div role="button" tabindex="0">') +
+      (href ? '<a>' : '<div role="button" tabindex="0">') +
         iconSvg +
-      (href ? '</a>' : '</div>'))
+      (href ? '</a>' : '</div>')
     );
 
     if (href) this.container.href = href;
