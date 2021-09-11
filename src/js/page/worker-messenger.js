@@ -27,15 +27,13 @@ export default class WorkerMessenger {
     if (Object.keys(this._pending).length === 0) return;
 
     this._abortPending();
-    if (this._worker) {
-      this._worker.terminate();
-    }
+    if (this._worker) this._worker.terminate();
     this._startWorker();
   }
 
   _abortPending() {
     for (const key of Object.keys(this._pending)) {
-      this._fulfillPending(key, null, new DOMException("AbortError", "AbortError"));
+      this._fulfillPending(key, null, new DOMException('AbortError', 'AbortError'));
     }
   }
 
@@ -45,15 +43,13 @@ export default class WorkerMessenger {
   }
 
   _postMessage(message) {
-    if (!this._worker) {
-      this._startWorker();
-    }
+    if (!this._worker) this._startWorker();
     this._worker.postMessage(message);
   }
 
   _onMessage(event) {
     if (!event.data.id) {
-      console.log("Unexpected message", event);
+      console.log('Unexpected message', event);
       return;
     }
 
@@ -68,7 +64,7 @@ export default class WorkerMessenger {
     const resolver = this._pending[id];
 
     if (!resolver) {
-      console.log("No resolver for", { id, result, error });
+      console.log('No resolver for', { id, result, error });
       return;
     }
 

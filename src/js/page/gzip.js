@@ -1,4 +1,4 @@
-import WorkerMessenger from './worker-messenger';
+import WorkerMessenger from './worker-messenger.js';
 
 class Gzip extends WorkerMessenger {
   constructor() {

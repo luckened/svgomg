@@ -1,4 +1,4 @@
-import FloatingActionButton from './floating-action-button';
+import FloatingActionButton from './floating-action-button.js';
 
 export default class DownloadButton extends FloatingActionButton {
   constructor() {

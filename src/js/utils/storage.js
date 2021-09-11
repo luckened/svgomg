@@ -20,6 +20,7 @@ export const idbKeyval = (() => {
         };
       });
     }
+
     return db;
   }
 
@@ -35,11 +36,11 @@ export const idbKeyval = (() => {
 
   return {
     async get(key) {
-      let req;
+      let request;
       await withStore('readonly', store => {
-        req = store.get(key);
+        request = store.get(key);
       });
-      return req.result;
+      return request.result;
     },
     set(key, value) {
       return withStore('readwrite', store => {

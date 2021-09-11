@@ -1,5 +1,5 @@
-import WorkerMessenger from './worker-messenger';
-import SvgFile from './svg-file';
+import WorkerMessenger from './worker-messenger.js';
+import SvgFile from './svg-file.js';
 
 export default class Svgo extends WorkerMessenger {
   constructor() {
@@ -8,7 +8,7 @@ export default class Svgo extends WorkerMessenger {
   }
 
   async wrapOriginal(svgText) {
-    const {width, height} = await this.requestResponse({
+    const { width, height } = await this.requestResponse({
       action: 'wrapOriginal',
       data: svgText
     });
@@ -19,7 +19,7 @@ export default class Svgo extends WorkerMessenger {
   process(svgText, settings) {
     this.abort();
 
-    return this._currentJob = this._currentJob.catch(() => {}).then(async () => {
+    this._currentJob = this._currentJob.catch(() => {}).then(async () => {
       const result = await this.requestResponse({
         action: 'process',
         settings,
@@ -29,5 +29,7 @@ export default class Svgo extends WorkerMessenger {
       // return final result
       return new SvgFile(result.data, result.dimensions.width, result.dimensions.height);
     });
+
+    return this._currentJob;
   }
 }

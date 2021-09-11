@@ -14,7 +14,7 @@ const createDimensionsExtractor = () => {
                 dimensions.width = Number.parseFloat(node.attributes.width);
                 dimensions.height = Number.parseFloat(node.attributes.height);
               } else if (node.attributes.viewBox != null) {
-                const viewBox = node.attributes.viewBox.split(/(?:,\s*|\s+)/);
+                const viewBox = node.attributes.viewBox.split(/,\s*|\s+/);
                 dimensions.width = Number.parseFloat(viewBox[2]);
                 dimensions.height = Number.parseFloat(viewBox[3]);
               }
@@ -31,39 +31,36 @@ function compress(svgInput, settings) {
   // setup plugin list
   const floatPrecision = Number(settings.floatPrecision);
   const plugins = [];
+
   for (const [pluginName, active] of Object.entries(settings.plugins)) {
-    if (active) {
-      const plugin = {
-        name: pluginName,
-        params: {}
-      };
-      if (plugin.name === 'cleanupNumericValues' && floatPrecision === 0) {
-        // 0 almost always breaks images when used on this plugin.
-        // Better to allow 0 for everything else, but switch to 1 for this plugin.
-        plugin.params.floatPrecision = 1;
-      } else {
-        plugin.params.floatPrecision = floatPrecision;
-      }
-      plugins.push(plugin);
-    }
+    if (!active) continue;
+
+    const plugin = {
+      name: pluginName,
+      params: {}
+    };
+
+    // 0 almost always breaks images when used on `cleanupNumericValues`.
+    // Better to allow 0 for everything else, but switch to 1 for this plugin.
+    plugin.params.floatPrecision = plugin.name === 'cleanupNumericValues' && floatPrecision === 0 ?
+      1 :
+      floatPrecision;
+
+    plugins.push(plugin);
   }
 
   // multipass optimization
   const [dimensions, extractDimensionsPlugin] = createDimensionsExtractor();
   const { data: svgOutput, error } = optimize(svgInput, {
     multipass: settings.multipass,
-    plugins: [
-      ...plugins,
-      extractDimensionsPlugin,
-    ],
+    plugins: [...plugins, extractDimensionsPlugin],
     js2svg: {
       indent: '  ',
       pretty: settings.pretty
     }
   });
-  if (error) {
-    throw Error(error);
-  }
+
+  if (error) throw new Error(error);
 
   return {
     data: svgOutput,
@@ -77,9 +74,8 @@ const actions = {
     const { error } = optimize(data, {
       plugins: [extractDimensionsPlugin],
     });
-    if (error) {
-      throw Error(error);
-    }
+
+    if (error) throw new Error(error);
 
     return dimensions;
   },
@@ -94,11 +90,10 @@ self.onmessage = event => {
       id: event.data.id,
       result: actions[event.data.action](event.data)
     });
-  }
-  catch (e) {
+  } catch (error) {
     self.postMessage({
       id: event.data.id,
-      error: e.message
+      error: error.message
     });
   }
 };

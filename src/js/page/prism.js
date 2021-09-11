@@ -1,4 +1,4 @@
-import WorkerMessenger from './worker-messenger';
+import WorkerMessenger from './worker-messenger.js';
 
 export default class Prism extends WorkerMessenger {
   constructor() {

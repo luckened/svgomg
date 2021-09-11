@@ -1,5 +1,5 @@
 import { createNanoEvents } from 'nanoevents';
-import { domReady } from '../utils';
+import { domReady } from '../utils.js';
 
 /**
  * Tabs that toggle between showing the SVG image and XML markup.
