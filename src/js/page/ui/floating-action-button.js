@@ -22,11 +22,9 @@ export default class FloatingActionButton {
     }
 
     this._ripple = new Ripple();
-    this.container.append(this._ripple.container);
-
     this._spinner = new Spinner();
-    this.container.append(this._spinner.container);
 
+    this.container.append(this._ripple.container, this._spinner.container);
     this.container.addEventListener('click', () => this.onClick());
   }
 
