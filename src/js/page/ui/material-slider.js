@@ -2,6 +2,7 @@ import { strToEl } from '../utils.js';
 
 export default class MaterialSlider {
   constructor(rangeElement) {
+    // prettier-ignore
     this.container = strToEl(
       '<div class="material-slider">' +
         '<div class="track">' +
@@ -52,6 +53,7 @@ export default class MaterialSlider {
     document.addEventListener('mouseup', upListener);
   }
 
+  // eslint-disable-next-line accessor-pairs
   set value(newValue) {
     this.range.value = newValue;
     this._update();

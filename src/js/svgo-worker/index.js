@@ -1,4 +1,4 @@
-import { optimize } from 'svgo/dist/svgo.browser';
+import { optimize } from 'svgo/dist/svgo.browser.js';
 
 const createDimensionsExtractor = () => {
   const dimensions = {};
@@ -19,10 +19,10 @@ const createDimensionsExtractor = () => {
                 dimensions.height = Number.parseFloat(viewBox[3]);
               }
             }
-          }
-        }
+          },
+        },
       };
-    }
+    },
   };
   return [dimensions, plugin];
 };
@@ -37,14 +37,16 @@ const compress = (svgInput, settings) => {
 
     const plugin = {
       name,
-      params: {}
+      params: {},
     };
 
+    // TODO: revisit this
     // 0 almost always breaks images when used on `cleanupNumericValues`.
     // Better to allow 0 for everything else, but switch to 1 for this plugin.
-    plugin.params.floatPrecision = plugin.name === 'cleanupNumericValues' && floatPrecision === 0 ?
-      1 :
-      floatPrecision;
+    plugin.params.floatPrecision =
+      plugin.name === 'cleanupNumericValues' && floatPrecision === 0
+        ? 1
+        : floatPrecision;
 
     plugins.push(plugin);
   }
@@ -56,8 +58,8 @@ const compress = (svgInput, settings) => {
     plugins: [...plugins, extractDimensionsPlugin],
     js2svg: {
       indent: '  ',
-      pretty: settings.pretty
-    }
+      pretty: settings.pretty,
+    },
   });
 
   if (error) throw new Error(error);
@@ -85,12 +87,12 @@ self.onmessage = ({ data }) => {
   try {
     self.postMessage({
       id: data.id,
-      result: actions[data.action](data)
+      result: actions[data.action](data),
     });
   } catch (error) {
     self.postMessage({
       id: data.id,
-      error: error.message
+      error: error.message,
     });
   }
 };

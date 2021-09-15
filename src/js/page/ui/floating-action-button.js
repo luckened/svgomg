@@ -4,6 +4,7 @@ import Spinner from './spinner.js';
 
 export default class FloatingActionButton {
   constructor({ title, href, iconSvg, classList, major = false }) {
+    // prettier-ignore
     this.container = strToEl(
       (href ? '<a>' : '<div role="button" tabindex="0">') +
         iconSvg +
@@ -13,7 +14,9 @@ export default class FloatingActionButton {
     if (href) this.container.href = href;
     if (title) this.container.setAttribute('title', title);
 
-    this.container.classList.add(major ? 'floating-action-button' : 'minor-floating-action-button');
+    this.container.classList.add(
+      major ? 'floating-action-button' : 'minor-floating-action-button',
+    );
 
     if (classList) {
       for (const className of classList) {

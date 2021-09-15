@@ -5,12 +5,12 @@ self.onmessage = ({ data }) => {
     const result = gzip(data.data).buffer;
     self.postMessage({
       id: data.id,
-      result
+      result,
     });
   } catch (error) {
     self.postMessage({
       id: data.id,
-      error: error.message
+      error: error.message,
     });
   }
 };
