@@ -16,13 +16,16 @@ addEventListener('install', (event) => {
 
       await cache.addAll([
         './',
-        'imgs/icon.png',
         'all.css',
+        'changelog.json',
+        'manifest.json',
+        'imgs/icon.png',
+        'imgs/maskable.png',
         'js/gzip-worker.js',
         'js/page.js',
         'js/prism-worker.js',
         'js/svgo-worker.js',
-        'changelog.json',
+        'test-svgs/car-lite.svg',
         'https://fonts.googleapis.com/css?family=Inconsolata',
       ]);
 
