@@ -18,6 +18,11 @@
 
   transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
 
+  &.active {
+    background-color: #00bcd4;
+    color: #fff;
+  }
+
   &:hover,
   &.key-focused {
     transform: scale(1.15);
