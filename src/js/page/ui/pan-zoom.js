@@ -56,7 +56,7 @@ export default class PanZoom {
       const points = getPoints(event);
       const averagePoint = points.reduce(getMidpoint);
       const averageLastPoint = this._lastPoints.reduce(getMidpoint);
-      const boundingRect = this._target.getBoundingClientRect();
+      const { left, top } = this._target.getBoundingClientRect();
 
       this._dx += averagePoint.x - averageLastPoint.x;
       this._dy += averagePoint.y - averageLastPoint.y;
@@ -64,8 +64,8 @@ export default class PanZoom {
       if (points[1]) {
         const scaleDiff = touchDistance(points[0], points[1]) / touchDistance(this._lastPoints[0], this._lastPoints[1]);
         this._scale *= scaleDiff;
-        this._dx -= (averagePoint.x - boundingRect.left) * (scaleDiff - 1);
-        this._dy -= (averagePoint.y - boundingRect.top) * (scaleDiff - 1);
+        this._dx -= (averagePoint.x - left) * (scaleDiff - 1);
+        this._dy -= (averagePoint.y - top) * (scaleDiff - 1);
       }
 
       this._update();
@@ -107,7 +107,7 @@ export default class PanZoom {
     if (!this._shouldCaptureFunc(event.target)) return;
     event.preventDefault();
 
-    const boundingRect = this._target.getBoundingClientRect();
+    const { left, top } = this._target.getBoundingClientRect();
     let delta = event.deltaY;
 
     // 1 is "lines", 0 is "pixels"
@@ -125,8 +125,8 @@ export default class PanZoom {
     if (this._scale * scaleDiff < 0.05) return;
 
     this._scale *= scaleDiff;
-    this._dx -= (event.pageX - boundingRect.left) * (scaleDiff - 1);
-    this._dy -= (event.pageY - boundingRect.top) * (scaleDiff - 1);
+    this._dx -= (event.pageX - left) * (scaleDiff - 1);
+    this._dy -= (event.pageY - top) * (scaleDiff - 1);
     this._update();
   }
 

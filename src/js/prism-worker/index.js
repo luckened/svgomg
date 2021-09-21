@@ -2,15 +2,15 @@
 import './prism-config.js';
 import { highlight, languages } from 'prismjs';
 
-self.onmessage = (event) => {
+self.onmessage = ({ data }) => {
   try {
     self.postMessage({
-      id: event.data.id,
-      result: highlight(event.data.data, languages.markup)
+      id: data.id,
+      result: highlight(data.data, languages.markup)
     });
   } catch (error) {
     self.postMessage({
-      id: event.data.id,
+      id: data.id,
       error: error.message
     });
   }

@@ -13,8 +13,8 @@ export default class CodeOutput {
     this._codeEl = this.container.querySelector('code');
   }
 
-  async setSvg(svgFile) {
-    this._codeEl.innerHTML = await prism.highlight(svgFile.text);
+  async setSvg({ text }) {
+    this._codeEl.innerHTML = await prism.highlight(text);
   }
 
   reset() {

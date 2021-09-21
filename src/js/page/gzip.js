@@ -5,10 +5,8 @@ class Gzip extends WorkerMessenger {
     super('js/gzip-worker.js');
   }
 
-  compress(svgData) {
-    return this.requestResponse({
-      data: svgData
-    });
+  compress(data) {
+    return this.requestResponse({ data });
   }
 }
 

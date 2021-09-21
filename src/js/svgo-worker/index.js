@@ -8,13 +8,13 @@ const createDimensionsExtractor = () => {
     fn: () => {
       return {
         element: {
-          enter: (node, parentNode) => {
-            if (node.name === 'svg' && parentNode.type === 'root') {
-              if (node.attributes.width != null && node.attributes.height !== null) {
-                dimensions.width = Number.parseFloat(node.attributes.width);
-                dimensions.height = Number.parseFloat(node.attributes.height);
-              } else if (node.attributes.viewBox != null) {
-                const viewBox = node.attributes.viewBox.split(/,\s*|\s+/);
+          enter: ({ name, attributes }, { type }) => {
+            if (name === 'svg' && type === 'root') {
+              if (attributes.width != null && attributes.height !== null) {
+                dimensions.width = Number.parseFloat(attributes.width);
+                dimensions.height = Number.parseFloat(attributes.height);
+              } else if (attributes.viewBox != null) {
+                const viewBox = attributes.viewBox.split(/,\s*|\s+/);
                 dimensions.width = Number.parseFloat(viewBox[2]);
                 dimensions.height = Number.parseFloat(viewBox[3]);
               }
@@ -32,11 +32,11 @@ const compress = (svgInput, settings) => {
   const floatPrecision = Number(settings.floatPrecision);
   const plugins = [];
 
-  for (const [pluginName, active] of Object.entries(settings.plugins)) {
+  for (const [name, active] of Object.entries(settings.plugins)) {
     if (!active) continue;
 
     const plugin = {
-      name: pluginName,
+      name,
       params: {}
     };
 
@@ -51,7 +51,7 @@ const compress = (svgInput, settings) => {
 
   // multipass optimization
   const [dimensions, extractDimensionsPlugin] = createDimensionsExtractor();
-  const { data: svgOutput, error } = optimize(svgInput, {
+  const { data, error } = optimize(svgInput, {
     multipass: settings.multipass,
     plugins: [...plugins, extractDimensionsPlugin],
     js2svg: {
@@ -62,10 +62,7 @@ const compress = (svgInput, settings) => {
 
   if (error) throw new Error(error);
 
-  return {
-    data: svgOutput,
-    dimensions
-  };
+  return { data, dimensions };
 };
 
 const actions = {
@@ -84,15 +81,15 @@ const actions = {
   },
 };
 
-self.onmessage = event => {
+self.onmessage = ({ data }) => {
   try {
     self.postMessage({
-      id: event.data.id,
-      result: actions[event.data.action](event.data)
+      id: data.id,
+      result: actions[data.action](data)
     });
   } catch (error) {
     self.postMessage({
-      id: event.data.id,
+      id: data.id,
       error: error.message
     });
   }

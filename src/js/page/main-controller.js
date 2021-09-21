@@ -104,10 +104,8 @@ export default class MainController {
       // eslint-disable-next-line no-constant-condition
       if (false) {
         (async () => {
-          this._onInputChange({
-            data: await fetch('test-svgs/car-lite.svg').then(response => response.text()),
-            filename: 'car-lite.svg'
-          });
+          const data = await fetch('test-svgs/car-lite.svg').then(response => response.text());
+          this._onInputChange({ data, filename: 'car-lite.svg' });
         })();
       }
     });
@@ -200,13 +198,13 @@ export default class MainController {
     }
   }
 
-  async _onInputChange(event) {
+  async _onInputChange({ data, filename }) {
     const settings = this._settingsUi.getSettings();
     this._userHasInteracted = true;
 
     try {
-      this._inputItem = await svgo.wrapOriginal(event.data);
-      this._inputFilename = event.filename;
+      this._inputItem = await svgo.wrapOriginal(data);
+      this._inputFilename = filename;
     } catch (error) {
       this._mainMenuUi.stopSpinner();
       this._handleError(new Error(`Load failed: ${error.message}`));

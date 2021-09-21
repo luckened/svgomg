@@ -60,9 +60,9 @@ const handleFontRequest = async (request) => {
 };
 
 addEventListener('fetch', event => {
-  const url = new URL(event.request.url);
+  const { host } = new URL(event.request.url);
 
-  if (url.host === 'fonts.gstatic.com') {
+  if (host === 'fonts.gstatic.com') {
     event.respondWith(handleFontRequest(event.request));
     return;
   }
