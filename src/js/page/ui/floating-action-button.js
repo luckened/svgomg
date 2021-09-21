@@ -6,9 +6,9 @@ export default class FloatingActionButton {
   constructor({ title, href, iconSvg, classList, major = false }) {
     // prettier-ignore
     this.container = strToEl(
-      (href ? '<a>' : '<div role="button" tabindex="0">') +
+      (href ? '<a>' : '<button class="unbutton" type="button">') +
         iconSvg +
-      (href ? '</a>' : '</div>')
+      (href ? '</a>' : '</button>')
     );
 
     if (href) this.container.href = href;
