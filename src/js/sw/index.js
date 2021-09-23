@@ -17,6 +17,7 @@ addEventListener('install', (event) => {
       await cache.addAll([
         './',
         'all.css',
+        'car-lite.svg',
         'changelog.json',
         'manifest.json',
         'imgs/android-chrome-192x192.png',
@@ -27,7 +28,6 @@ addEventListener('install', (event) => {
         'js/page.js',
         'js/prism-worker.js',
         'js/svgo-worker.js',
-        'test-svgs/car-lite.svg',
         'https://fonts.googleapis.com/css?family=Inconsolata',
       ]);
 
