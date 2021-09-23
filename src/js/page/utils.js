@@ -38,9 +38,13 @@ export const readFileAsText = (file) => {
 
 const transitionClassFunc = ({ removeClass = false } = {}) => {
   return (element, className = 'active', transitionClass = 'transition') => {
+    const hasClass = element.classList.contains(className);
+
     if (removeClass) {
-      if (!element.classList.contains(className)) return Promise.resolve();
-    } else if (element.classList.contains(className)) return Promise.resolve();
+      if (!hasClass) return Promise.resolve();
+    } else if (hasClass) {
+      return Promise.resolve();
+    }
 
     const transitionEnd = new Promise(resolve => {
       const listener = event => {
