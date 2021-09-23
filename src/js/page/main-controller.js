@@ -35,7 +35,7 @@ export default class MainController {
     this._toastsUi = new Toasts();
     this._dropUi = new FileDrop();
     this._preloaderUi = new Preloader();
-    this._changelogUi = new Changelog(self.version);
+    this._changelogUi = new Changelog(self.svgomgVersion);
     this._resultsContainerUi = new ResultsContainer(this._resultsUi);
     this._viewTogglerUi = new ViewToggler();
 
@@ -80,7 +80,7 @@ export default class MainController {
     // tell the user about the latest update
     storage.get('last-seen-version').then((lastSeenVersion) => {
       if (lastSeenVersion) this._changelogUi.showLogFrom(lastSeenVersion);
-      storage.set('last-seen-version', self.version);
+      storage.set('last-seen-version', self.svgomgVersion);
     });
 
     domReady.then(() => {
