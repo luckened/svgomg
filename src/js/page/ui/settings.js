@@ -46,7 +46,7 @@ export default class Settings {
     // Prevents bounce effect on desktop.
     // Firefox uses DELTA_LINE on a mouse wheel, ignore it
     // 0 is "pixels"
-    if (!event.deltaMode) {
+    if (event.deltaMode === 0) {
       event.preventDefault();
       event.currentTarget.scrollTop += event.deltaY;
     }
