@@ -67,6 +67,7 @@
       "no-eq-null": "off",
       "no-multi-assign": "off",
       "no-negated-condition": "off",
+      "no-shadow": "error",
       "prefer-template": "error",
       "spaced-comment": "off",
       "unicorn/explicit-length-check": "off",

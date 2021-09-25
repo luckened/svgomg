@@ -1,9 +1,9 @@
 export const idbKeyval = (() => {
-  let db;
+  let dbInstance;
 
   const getDB = () => {
-    if (!db) {
-      db = new Promise((resolve, reject) => {
+    if (!dbInstance) {
+      dbInstance = new Promise((resolve, reject) => {
         const openreq = indexedDB.open('svgo-keyval', 1);
 
         openreq.onerror = () => {
@@ -21,7 +21,7 @@ export const idbKeyval = (() => {
       });
     }
 
-    return db;
+    return dbInstance;
   };
 
   const withStore = async (type, callback) => {
