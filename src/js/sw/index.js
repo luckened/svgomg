@@ -5,8 +5,6 @@ import { idbKeyval as storage } from '../utils/storage.js';
 const version = SVGOMG_VERSION;
 const cachePrefix = 'svgomg-';
 const staticCacheName = `${cachePrefix}static-${version}`;
-const fontCacheName = `${cachePrefix}fonts`;
-const expectedCaches = new Set([staticCacheName, fontCacheName]);
 
 addEventListener('install', (event) => {
   event.waitUntil(
@@ -28,7 +26,6 @@ addEventListener('install', (event) => {
         'js/page.js',
         'js/prism-worker.js',
         'js/svgo-worker.js',
-        'https://fonts.googleapis.com/css?family=Inconsolata',
       ]);
 
       const activeVersion = await activeVersionPromise;
@@ -47,12 +44,12 @@ addEventListener('install', (event) => {
 addEventListener('activate', (event) => {
   event.waitUntil(
     (async () => {
-      // remove caches beginning "svgomg-" that aren't in expectedCaches
+      // remove caches beginning "svgomg-" that aren't `staticCacheName`
       for (const cacheName of await caches.keys()) {
         if (!cacheName.startsWith(cachePrefix)) continue;
         // TODO: switch to Promise.all
         // eslint-disable-next-line no-await-in-loop
-        if (!expectedCaches.has(cacheName)) await caches.delete(cacheName);
+        if (!cacheName === staticCacheName) await caches.delete(cacheName);
       }
 
       await storage.set('active-version', version);
@@ -60,27 +57,7 @@ addEventListener('activate', (event) => {
   );
 });
 
-const handleFontRequest = async (request) => {
-  const match = await caches.match(request);
-  if (match) return match;
-
-  const [response, fontCache] = await Promise.all([
-    fetch(request),
-    caches.open(fontCacheName),
-  ]);
-
-  fontCache.put(request, response.clone());
-  return response;
-};
-
 addEventListener('fetch', (event) => {
-  const { host } = new URL(event.request.url);
-
-  if (host === 'fonts.gstatic.com') {
-    event.respondWith(handleFontRequest(event.request));
-    return;
-  }
-
   event.respondWith(
     caches
       .match(event.request)
