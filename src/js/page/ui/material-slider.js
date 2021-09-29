@@ -20,10 +20,10 @@ export default class MaterialSlider {
     this._trackOn = this.container.querySelector('.track-on');
     this._val = this.container.querySelector('.val');
 
-    rangeElement.parentNode.insertBefore(this.container, rangeElement);
-    this.container.insertBefore(rangeElement, this.container.firstChild);
+    this._range.parentNode.insertBefore(this.container, this._range);
+    this.container.insertBefore(this._range, this.container.firstChild);
 
-    rangeElement.addEventListener('input', () => this._onInputChange());
+    this._range.addEventListener('input', () => this._onInputChange());
     this._range.addEventListener('mousedown', () => this._onRangeMouseDown());
     this._range.addEventListener('touchstart', () => this._onRangeTouchStart());
     this._range.addEventListener('touchend', () => this._onRangeTouchEnd());
