@@ -4,8 +4,9 @@ class Toast {
   constructor(message, duration, buttons) {
     this.container = strToEl('<div class="toast"><div class="toast-content"></div></div>');
 
-    this._content = this.container.querySelector('.toast-content');
-    this._content.textContent = message;
+    const content = this.container.querySelector('.toast-content');
+    content.textContent = message;
+
     this._answerResolve = null;
     this._hideTimeout = null;
 
