@@ -17,7 +17,7 @@ export default class BgFillButton extends FloatingActionButton {
 
   onClick(event) {
     super.onClick(event);
-    // event adds a background color
+
     if (this.container.classList.contains('active')) {
       this.container.classList.remove('active');
     }
@@ -25,6 +25,11 @@ export default class BgFillButton extends FloatingActionButton {
       this.container.classList.add('active');
     }
 
-    document.documentElement.classList.toggle('bg-dark');
+    if (document.documentElement.classList.contains('bg-dark')) {
+      document.documentElement.classList.remove('bg-dark');
+    }
+    else {
+      document.documentElement.classList.add('bg-dark');
+    }
   }
 }
